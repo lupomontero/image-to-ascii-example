@@ -1,19 +1,30 @@
-import Stats from 'stats.js';
+import fps from './fps';
+import imageToAsciiJS from './image-to-ascii';
+const imageToAsciiWasm = import('image-to-ascii');
 
 
-const stats = new Stats();
 const video = document.createElement('video');
 const canvas = document.createElement('canvas');
 const pre = document.createElement('pre');
+const fpsOut = document.createElement('div');
 const ctx = canvas.getContext('2d');
 
 
 document.body.appendChild(pre);
-document.body.appendChild(stats.dom);
+document.body.appendChild(fpsOut);
+
+
+const meter = fps(({ frameTime, endTime }) => {
+  fpsOut.innerHTML = `
+    <div>${(1000 / frameTime).toFixed(1)} fps</div>
+    ${typeof endTime === 'number' ? `<div>${endTime} ms</div>` : ''}
+  `;
+});
 
 
 Promise.all([
-  import('image-to-ascii'),
+  imageToAsciiJS,
+  // imageToAsciiWasm,
   navigator.mediaDevices.getUserMedia({ video: true }),
 ])
   .then(([imageToAscii, stream]) => {
@@ -34,10 +45,10 @@ Promise.all([
     };
 
     const update = () => {
-      stats.begin();
+      meter.begin();
       ctx.drawImage(video, 0, 0, width, height);
       pre.innerHTML = imageToAscii.fromCanvas(canvas, 'plain');
-      stats.end();
+      meter.end();
       requestAnimationFrame(update);
     };
 

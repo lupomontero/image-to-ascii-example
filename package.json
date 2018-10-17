@@ -7,7 +7,9 @@
   "scripts": {
     "pretest": "eslint .",
     "test": "jest --verbose --coverage",
-    "start": "webpack-dev-server --mode development --content-base dist/"
+    "start": "webpack-dev-server --mode development --content-base dist/",
+    "build": "webpack --mode=production",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -15,13 +17,13 @@
     "eslint": "^5.7.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
+    "gh-pages": "^2.0.1",
     "jest": "^23.6.0",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9"
   },
   "dependencies": {
-    "image-to-ascii": "lupomontero/image-to-ascii",
-    "stats.js": "^0.17.0"
+    "image-to-ascii": "lupomontero/image-to-ascii"
   }
 }
