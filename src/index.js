@@ -1,5 +1,5 @@
 import fps from './fps';
-import imageToAsciiJS from './image-to-ascii';
+// import imageToAsciiJS from './image-to-ascii';
 const imageToAsciiWasm = import('image-to-ascii');
 
 
@@ -17,14 +17,14 @@ document.body.appendChild(fpsOut);
 const meter = fps(({ frameTime, endTime }) => {
   fpsOut.innerHTML = `
     <div>${(1000 / frameTime).toFixed(1)} fps</div>
-    ${typeof endTime === 'number' ? `<div>${endTime} ms</div>` : ''}
+    ${endTime ? `<div>${endTime} ms</div>` : ''}
   `;
 });
 
 
 Promise.all([
-  imageToAsciiJS,
-  // imageToAsciiWasm,
+  // imageToAsciiJS,
+  imageToAsciiWasm,
   navigator.mediaDevices.getUserMedia({ video: true }),
 ])
   .then(([imageToAscii, stream]) => {

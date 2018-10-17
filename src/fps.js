@@ -32,7 +32,7 @@ export default (...args) => {
     lastLoop = thisLoop;
 
     if (beginTime) {
-      endTime = thisLoop - beginTime;
+      endTime = (thisLoop - beginTime).toFixed(0);
     }
   };
 
